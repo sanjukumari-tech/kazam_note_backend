@@ -40,6 +40,6 @@ server.listen(PORT, async () => {
     console.log(`Server is running at http://localhost:${PORT}`);
   } catch (err) {
     console.error("Failed to connect to DB:", err);
-    process.exit(1);
+
   }
 });
