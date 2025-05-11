@@ -34,8 +34,12 @@ app.use(express.json());
 
 app.use("/api", taskRoutes);
 
-app.listen(PORT, async () => {
-  await connectDB();
-  console.log(`server is running on port no http://localhost:${PORT}`);
+server.listen(PORT, async () => {
+  try {
+    await connectDB();
+    console.log(`Server is running at http://localhost:${PORT}`);
+  } catch (err) {
+    console.error("Failed to connect to DB:", err);
+    process.exit(1);
+  }
 });
-

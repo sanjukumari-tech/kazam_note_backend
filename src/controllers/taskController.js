@@ -38,7 +38,7 @@ async function dataToRedis(notes) {
       // console.log("dataFromMongodb",dbNotes)
       // console.log("Notes saved to MongoDB");
     } catch (err) {
-      console.error("❌ Error saving to MongoDB:", err);
+      console.error(" Error saving to MongoDB:", err);
     }
   }
 }
