@@ -47,23 +47,40 @@ export const add = async (req, res) => {
   try {
     const { text } = req.body;
 
-    if (!text) return res.status(400).json({ error: "Text is required" });
+    if (!text) {
+      return res.status(400).json({
+        status: "error",
+        message: "Text is required"
+      });
+    }
+
     const note = { text, createdAt: new Date() };
     notes.push(note);
 
     if (notes.length > 0) {
       await dataToRedis(notes);
     }
+
     const io = req.app.locals.io;
     io.emit("new notes", note);
-    console.log(io);
-    console.log("emmited new notes using socket.io");
-    res.json({ message: "Notes added", notesCount: notes.length });
+    console.log("Emitted new notes using socket.io");
+
+    return res.status(201).json({
+      status: "success",
+      message: "Note added successfully",
+      notesCount: notes.length,
+      note
+    });
   } catch (error) {
-    console.log(error);
-    throw new Error(error?.message);
+    console.error("Add Note Error:", error);
+    return res.status(500).json({
+      status: "error",
+      message: "Something went wrong while adding the note",
+      error: error?.message
+    });
   }
 };
+
 
 export const fetchAllNotes = async (req, res) => {
   res.json({ notes });
