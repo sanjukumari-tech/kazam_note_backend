@@ -46,7 +46,6 @@ async function dataToRedis(notes) {
 export const add = async (req, res) => {
   try {
     const { text } = req.body;
-
     if (!text) {
       return res.status(400).json({
         status: "error",
@@ -66,7 +65,7 @@ export const add = async (req, res) => {
     console.log("Emitted new notes using socket.io");
 
     return res.status(201).json({
-      status: res.status,
+      status: "success",
       message: "Note added successfully",
       notesCount: notes.length,
       note
@@ -74,7 +73,7 @@ export const add = async (req, res) => {
   } catch (error) {
     console.error("Add Note Error:", error);
     return res.status(500).json({
-      status: res.status,
+      status: "error",
       message: "Something went wrong while adding the note",
       error: error?.message
     });
