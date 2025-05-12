@@ -66,7 +66,7 @@ export const add = async (req, res) => {
     console.log("Emitted new notes using socket.io");
 
     return res.status(201).json({
-      status: "success",
+      status: res.status,
       message: "Note added successfully",
       notesCount: notes.length,
       note
@@ -74,7 +74,7 @@ export const add = async (req, res) => {
   } catch (error) {
     console.error("Add Note Error:", error);
     return res.status(500).json({
-      status: "error",
+      status: res.status,
       message: "Something went wrong while adding the note",
       error: error?.message
     });
