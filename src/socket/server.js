@@ -4,7 +4,7 @@ import { Server } from "socket.io";
 export const initSocketServer = (server) => {
   const io = new Server(server, {
     cors: {
-      origin: "https://kazam-note-frontend-dbih.vercel.app",  // frontend port
+      origin: "https://kazam-note-frontend-dbih.vercel.app", 
       methods: ["GET", "POST"],
       credentials: true,
     },
@@ -20,5 +20,5 @@ export const initSocketServer = (server) => {
     // Optional: You can handle other events here
   });
 
-  return io;  // return io instance
+  return io; 
 };
