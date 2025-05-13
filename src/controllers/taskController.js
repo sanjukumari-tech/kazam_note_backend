@@ -63,7 +63,7 @@ export const add = async (req, res) => {
 
     const io = req.app.locals.io;
     io.emit("new notes", text);
-    console.log("Emitted new notes using socket.io",note.text);
+    console.log("Emitted new notes using socket.io",text);
 
     return res.status(201).json({
       status: "success",
