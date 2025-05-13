@@ -5,7 +5,7 @@ const notes = [];
 const REDIS_KEY= process.env.REDIS_KEY;
 (async () => {
   try {
-    const cachedNotes = await redis.get("FULLSTACK_TASK_SANJUKUMARI");
+    const cachedNotes = await redis.get(REDIS_KEY);
 
     if (cachedNotes) {
       const parsedNotes = JSON.parse(cachedNotes);
@@ -50,7 +50,9 @@ export const add = async (req, res) => {
         message: "Text is required"
       });
     }
-
+ 
+    const cached = await redis.get(REDIS_KEY);
+    const notes = cached ? JSON.parse(cached) : [];
     const note = {text, createdAt: new Date() };
     notes.push(note);
 
@@ -60,13 +62,13 @@ export const add = async (req, res) => {
 
     const io = req.app.locals.io;
     io.emit("new notes", note);
-    console.log("Emitted new notes using socket.io");
+    console.log("Emitted new notes using socket.io",note.text);
 
     return res.status(201).json({
       status: "success",
       message: "Note added successfully",
       notesCount: notes.length,
-      note
+      notes
     });
   } catch (error) {
     console.error("Add Note Error:", error);
@@ -80,5 +82,13 @@ export const add = async (req, res) => {
 
 
 export const fetchAllNotes = async (req, res) => {
-  res.json({ notes });
+  try {
+    const cached = await redis.get(REDIS_KEY);
+    const notes = cached ? JSON.parse(cached) : [];
+
+    res.json({ notes });
+  } catch (err) {
+    console.error("Error fetching notes:", err);
+    res.status(500).json({ status: "error", message: "Failed to fetch notes" });
+  }
 };
