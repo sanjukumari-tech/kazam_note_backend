@@ -53,8 +53,9 @@ export const add = async (req, res) => {
  
     const cached = await redis.get(REDIS_KEY);
     const notes = cached ? JSON.parse(cached) : [];
-    const note = {text, createdAt: new Date() };
-    notes.push(note);
+    // const note = {text };
+    // console.log(note.text);
+    notes.push(text);
 
     if (notes.length > 0) {
       await dataToRedisOrMongo(notes);
